@@ -2,6 +2,7 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getDatabase } from "firebase/database";  // Import other services as needed
+import { getAuth } from "firebase/auth";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -22,6 +23,7 @@ const app = initializeApp(firebaseConfig);
 // Initialize Firebase services as needed
 const analytics = getAnalytics(app);
 const database = getDatabase(app);  // Initialize Realtime Database
+const auth = getAuth(app);
 
 // Optionally, export the initialized Firebase app if you need it elsewhere
-export { app, database };
+export { app, database, auth };
