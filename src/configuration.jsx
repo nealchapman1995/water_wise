@@ -21,7 +21,7 @@ console.log(process.env.REACT_APP_FIREBASE_API_KEY)
 const app = initializeApp(firebaseConfig);
 
 // Initialize Firebase services as needed
-const analytics = getAnalytics(app);
+//const analytics = getAnalytics(app);
 const database = getDatabase(app);  // Initialize Realtime Database
 const auth = getAuth(app);
 

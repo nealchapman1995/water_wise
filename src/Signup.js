@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { database, auth } from "./configuration"; // Import the database instance
-import { ref, onValue, set } from "firebase/database";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import React, { useState } from "react";
+import { auth } from "./configuration"; // Import the database instance
+//import { ref, onValue, set } from "firebase/database";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 
 const SignUpForm = () => {
     const [email, setEmail] = useState("");
