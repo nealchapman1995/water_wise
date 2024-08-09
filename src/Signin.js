@@ -3,11 +3,11 @@ import { auth } from "./configuration"; // Import the database instance
 // import { ref, onValue, set } from "firebase/database";
 import { signInWithEmailAndPassword } from "firebase/auth";
 
-const SignInForm = () => {
+const SignInForm = ({ setUser }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState(null);
-    const [user, setUser] = useState(null);
+    
 
     const handleSignIn = async (e) => {
         e.preventDefault();
@@ -33,10 +33,9 @@ const SignInForm = () => {
                 <label>Password:</label>
                 <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required></input>
             </div>
-            <button type="submit">Sign Up</button>
+            <button type="submit">Sign In</button>
         </form>
         {error && <p style={{ color: "red" }}>{error}</p>}
-        {user && <p>Welcome, {user.email}!</p>}
     </div>
   );
 };

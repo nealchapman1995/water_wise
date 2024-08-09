@@ -2,12 +2,15 @@ import React, { useState } from "react";
 import { auth } from "./configuration"; // Import the database instance
 //import { ref, onValue, set } from "firebase/database";
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 
-const SignUpForm = () => {
+const SignUpForm = ({ setUser }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState(null);
-    const [user, setUser] = useState(null);
+
+    const navigate = useNavigate();
+    
 
     const handleSignUp = async (e) => {
         e.preventDefault();
@@ -16,6 +19,7 @@ const SignUpForm = () => {
         try{
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             setUser(userCredential.user);
+            navigate("/home");
         } catch (error) {
             setError(error.message);
         }
@@ -36,7 +40,6 @@ const SignUpForm = () => {
             <button type="submit">Sign Up</button>
         </form>
         {error && <p style={{ color: "red" }}>{error}</p>}
-        {user && <p>Welcome, {user.email}!</p>}
     </div>
   );
 };

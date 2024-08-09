@@ -1,44 +1,27 @@
 import React, { useEffect, useState } from "react";
 import { database } from "./configuration"; // Import the database instance
 import { ref, onValue } from "firebase/database";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import SignUp from './Signup';
+import SignIn from './Signin';
+import HomePage from './HomePage';
+
 
 
 function App() {
-  const [data, setData] = useState([]);
+  const [user, setUser] = useState(null);
 
-  useEffect(() => {
-    // Reference to the specific collection in the database
-    const collectionRef = ref(database, "your_collection");
-
-    // Function to fetch data from the database
-    const fetchData = () => {
-      // Listen for changes in the collection
-      onValue(collectionRef, (snapshot) => {
-        const dataItem = snapshot.val();
-
-        // Check if dataItem exists
-        if (dataItem) {
-          // Convert the object values into an array
-          const displayItem = Object.values(dataItem);
-          setData(displayItem);
-        }
-      });
-    };
-
-    // Fetch data when the component mounts
-    fetchData();
-  }, []);
+  
 
   return (
-    <div>
-      <h1>Data from database:</h1>
-      <ul>
-        {data.map((item, index) => (
-          <li key={index}>{item}</li>
-        ))}
-      </ul>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={user ? <Navigate to="./home" /> : <SignIn setUser={setUser} />} />
+        <Route path="/signup" element={<SignUp setUser={setUser} />} />
+        <Route path="/home" element={user ? <HomePage user={user} /> : <Navigate to="/" />} />
+      </Routes>
+    </Router>
   );
-}
+};
 
 export default App;
