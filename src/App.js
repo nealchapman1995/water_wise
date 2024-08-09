@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { database } from "./configuration"; // Import the database instance
-import { ref, onValue } from "firebase/database";
+import React, { useState } from "react";
+//import { database } from "./configuration"; // Import the database instance
+//import { ref, onValue } from "firebase/database";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import SignUp from './Signup';
 import SignIn from './Signin';
