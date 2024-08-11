@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { auth } from "./configuration"; // Import the database instance
 //import { ref, onValue, set } from "firebase/database";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 
 const SignUpForm = ({ setUser }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState(null);
+    const [name, setName] = useState("");
 
     const navigate = useNavigate();
     
@@ -19,6 +20,13 @@ const SignUpForm = ({ setUser }) => {
         try{
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             setUser(userCredential.user);
+            updateProfile(auth.currentUser, {
+                displayName: name
+            }).then(() => {
+                navigate("/home");
+              }).catch((error) => {
+                setError(error.message);
+              });
             navigate("/home");
         } catch (error) {
             setError(error.message);
@@ -36,6 +44,10 @@ const SignUpForm = ({ setUser }) => {
             <div>
                 <label>Password:</label>
                 <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required></input>
+            </div>
+            <div>
+                <label>Display Name</label>
+                <input type="text" value={name} onChange={(e) => setName(e.target.value)} required></input>
             </div>
             <button type="submit">Sign Up</button>
         </form>

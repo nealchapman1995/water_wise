@@ -68,7 +68,7 @@ const HomePage = ({ user }) => {
 
   return (
     <div>
-      <h1>Welcome, {user.email}!</h1>
+      <h1>Welcome, {user.displayName}!</h1>
       <h1>What's the Forecast Looking Like?</h1>
       <div className='citySelector'>
         <label htmlFor='cityInput'>Pick a City! </label>
