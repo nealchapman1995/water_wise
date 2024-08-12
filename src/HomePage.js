@@ -1,16 +1,49 @@
 import React, { useEffect, useState } from 'react';
+import { ref, get } from "firebase/database";
+import { database } from "./configuration"; // Your Firebase database configuration
+import { getAuth, signOut } from 'firebase/auth';
+import { useNavigate } from "react-router-dom";
 
 const HomePage = ({ user }) => {
     const [data, setData] = useState(null);
-    const [selectedCity, setSelectedCity] = useState('Denver');
-    const [inputCity, setInputCity] = useState('Denver');
+    const [selectedCity, setSelectedCity] = useState('');
+    const [inputCity, setInputCity] = useState('');
     const [error, setError] = useState('');
 
+    const auth = getAuth();
+    const navigate = useNavigate();
+
+    const getUserData = async (user) => {
+        const userID = user.uid;
+        const userRef = ref(database, 'users/' + userID);
+
+        get(userRef)
+            .then((snapshot) => {
+                if (snapshot.exists()) {
+                    const userData = snapshot.val();
+                    const userCity = userData.city;
+                    setSelectedCity(userCity); // Corrected function call
+                    setInputCity(userCity);
+                }
+            })
+            .catch((error) => {
+                console.error("Issue getting data:", error);
+            });
+    };
+
     useEffect(() => {
-        fetchWeatherData(selectedCity);
-      }, [selectedCity]);
+        if (user) {
+            getUserData(user);
+        }
+    }, [user]);
+
+    useEffect(() => {
+        if (selectedCity) { // Only call fetchWeatherData if selectedCity is not an empty string
+            fetchWeatherData(selectedCity);
+        }
+    }, [selectedCity]);
     
-      const fetchWeatherData = (city) => {
+    const fetchWeatherData = (city) => {
         fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${process.env.REACT_APP_WEATHER_KEY}&units=imperial`)
           .then(response => {
             if (!response.ok) {
@@ -28,15 +61,25 @@ const HomePage = ({ user }) => {
             setError('City not found. Please check the spelling and try again.');
           });
       };
-    
-      const handleInputChange = (e) => {
+
+    const handleInputChange = (e) => {
         setInputCity(e.target.value);
-      };
-    
-      const handleChangeCity = () => {
+    };
+
+    const handleChangeCity = () => {
         setSelectedCity(inputCity);
         //setSelectedDay(null);
-      };
+    };
+
+    const signOutUser = () => {
+        signOut(auth)
+            .then(() => {
+                navigate('./')
+            })
+            .catch((error) => {
+                console.error("Error signing out");
+            });
+    };
 
       const groupedData = data?.list.reduce((acc, item) => {
         const date = new Date(item.dt * 1000).toLocaleDateString();
@@ -87,16 +130,6 @@ const HomePage = ({ user }) => {
           {dates.map((item, index) => (
             <div className='dayBox' key={index}>
               <h5>{item.date}</h5>
-              <div className='tempContainer'>
-                <div>
-                  <h5 className='tempBox'>Highest temp!</h5>
-                  <p>{item.temp_max}°F</p>
-                </div>
-                <div>
-                  <h5 className='tempBox'>Lowest temp!</h5>
-                  <p>{item.temp_min}°F</p>
-                </div>
-              </div>
               <p>Rain Probability: {item.averagePop}%</p>
               <table>
               <thead>
@@ -118,6 +151,7 @@ const HomePage = ({ user }) => {
           ))}
         </div>
       )}
+      <button onClick={signOutUser}>Sign Out</button>
     </div>
   );
 };

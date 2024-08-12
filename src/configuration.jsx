@@ -2,7 +2,7 @@
 import { initializeApp } from "firebase/app";
 //import { getAnalytics } from "firebase/analytics";
 import { getDatabase } from "firebase/database";  // Import other services as needed
-import { getAuth } from "firebase/auth";
+import { getAuth, setPersistence, browserLocalPersistence } from "firebase/auth";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -15,8 +15,6 @@ const firebaseConfig = {
   appId: process.env.REACT_APP_FIREBASE_APP_ID,
   measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID
 };
-
-console.log(process.env.REACT_APP_FIREBASE_API_KEY)
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
@@ -24,6 +22,14 @@ const app = initializeApp(firebaseConfig);
 //const analytics = getAnalytics(app);
 const database = getDatabase(app);  // Initialize Realtime Database
 const auth = getAuth(app);
+
+setPersistence(auth, browserLocalPersistence)
+  .then(() => {
+    // Persistence is set; now you can handle sign-in or sign-out
+  })
+  .catch((error) => {
+    console.error("Error setting persistence:", error);
+  });
 
 // Optionally, export the initialized Firebase app if you need it elsewhere
 export { app, database, auth };
