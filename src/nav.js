@@ -1,9 +1,10 @@
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { useNavigate } from "react-router-dom";
+import { getAuth, signOut } from 'firebase/auth';
 
 const navigation = [
-  { name: 'Dashboard', href: '/', current: true },
-  { name: 'SignUp', href: '/signup', current: false },
+  { name: 'Home', href: '#', current: false },
 ]
 
 function classNames(...classes) {
@@ -11,8 +12,20 @@ function classNames(...classes) {
 }
 
 export default function NavBar() {
+    const auth = getAuth();
+    const navigate = useNavigate();
+
+    const signOutUser = () => {
+        signOut(auth)
+            .then(() => {
+                navigate('./')
+            })
+            .catch((error) => {
+                console.error("Error signing out");
+            });
+    };
   return (
-    <Disclosure as="nav" className="bg-gray-800">
+    <Disclosure as="nav" className="bg-inherit">
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
         <div className="relative flex h-16 items-center justify-between">
           <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
@@ -40,8 +53,8 @@ export default function NavBar() {
                     href={item.href}
                     aria-current={item.current ? 'page' : undefined}
                     className={classNames(
-                      item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                      'rounded-md px-3 py-2 text-sm font-medium',
+                      item.current ? 'bg-sky-900 text-black' : 'shadow-sm shadow-teal bg-lite-blue text-sky-950 hover:bg-teal ',
+                      'rounded-lg px-3 py-2 text-sm font-medium',
                     )}
                   >
                     {item.name}
@@ -53,7 +66,7 @@ export default function NavBar() {
           <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
             <button
               type="button"
-              className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+              className="relative rounded-full bg-sky-500 p-1 text-sky-950 hover:text-sky-200 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-sky-800"
             >
               <span className="absolute -inset-1.5" />
               <span className="sr-only">View notifications</span>
@@ -63,7 +76,7 @@ export default function NavBar() {
             {/* Profile dropdown */}
             <Menu as="div" className="relative ml-3">
               <div>
-                <MenuButton className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                <MenuButton className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-sky-400 focus:ring-offset-2 focus:ring-offset-sky-500">
                   <span className="absolute -inset-1.5" />
                   <span className="sr-only">Open user menu</span>
                   <img
@@ -78,19 +91,19 @@ export default function NavBar() {
                 className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
               >
                 <MenuItem>
-                  <a href="/signup" className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100">
+                  <a href="#" className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-sky-100">
                     Your Profile
                   </a>
                 </MenuItem>
                 <MenuItem>
-                  <a href="/signup" className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100">
+                  <a href="#" className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-sky-100">
                     Settings
                   </a>
                 </MenuItem>
                 <MenuItem>
-                  <a href="/signup" className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100">
+                  <button onClick={signOutUser} className="block w-full px-4 py-2 text-sm text-gray-700 data-[focus]:bg-sky-100 text-left">
                     Sign out
-                  </a>
+                  </button>
                 </MenuItem>
               </MenuItems>
             </Menu>
