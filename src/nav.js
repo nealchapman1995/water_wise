@@ -4,7 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { getAuth, signOut } from 'firebase/auth';
 
 const navigation = [
-  { name: 'Home', href: '#', current: false },
+  { name: 'Home', href: '/home', current: false },
+  { name: 'Plant Search', href: '/plantsearch', current: false},
 ]
 
 function classNames(...classes) {

@@ -101,13 +101,6 @@ const HomePage = ({ user }) => {
         const averagePop = (groupedData[date].totalPop / groupedData[date].count) * 100;
         return { date, averagePop: averagePop.toFixed(1), temp_min: groupedData[date].temp_min.toFixed(0), temp_max: groupedData[date].temp_max.toFixed(0), icon: groupedData[date].icon };
       }) : [];
-    
-      const plants = [
-        {Name: 'Rocky Mountain Maple', rain: 60 }, 
-        {Name: 'Ponderosa Pine', rain: 20}, 
-        {Name: 'Blue Grama', rain: 20}, 
-        {Name: 'Western Wild Rose', rain: 40}
-      ]
 
   return (
     <div>
@@ -131,22 +124,6 @@ const HomePage = ({ user }) => {
             <div className='dayBox' key={index}>
               <h5>{item.date}</h5>
               <p>Rain Probability: {item.averagePop}%</p>
-              <table>
-              <thead>
-                <tr>
-                <th className='Plants'>Plant Name</th>
-                <th>Should you Water it?</th>
-                </tr>
-              </thead>
-              <tbody>
-                {plants.map((plant, plantindex) => (
-                  <tr>
-                    <td  className='Plants'>{plant.Name}</td>
-                    <td>{item.averagePop >= plant.rain ? 'No' : 'Yes'}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
             </div>
           ))}
         </div>

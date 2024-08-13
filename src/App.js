@@ -6,6 +6,7 @@ import SignUp from './Signup';
 import SignIn from './Signin';
 import HomePage from './HomePage';
 import NavBar from "./nav";
+import PlantSearch from "./plantSearch";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -48,6 +49,7 @@ function App() {
         <Route path="/" element={user ? <Navigate to="/home" /> : <SignIn setUser={setUser} />} />
         <Route path="/signup" element={<SignUp setUser={setUser} />} />
         <Route path="/home" element={user ? <HomePage user={user} /> : <Navigate to="/" />} />
+        <Route path='/plantsearch' element={<PlantSearch />} />
       </Routes>
     </Router>
   );
