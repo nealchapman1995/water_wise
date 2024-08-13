@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { ref, get } from "firebase/database";
+import { ref, get, update } from "firebase/database";
 import { database } from "./configuration"; // Adjust the path as needed
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLeaf } from '@fortawesome/free-solid-svg-icons';
 
-function PlantSearch() {
+function PlantSearch({ user }) {
     const [searchTerm, setSearchTerm] = useState('');
     const [results, setResults] = useState([]);
 
@@ -27,6 +27,17 @@ function PlantSearch() {
         setResults(searchResults);
     };
 
+    const addToUserGarden = async (plantName) => {
+        if (!user) {
+            console.error('User ID is not defined');
+            return;
+        }
+        const userPlantsRef = ref(database, `users/${user.uid}/plants`);
+        await update(userPlantsRef, {
+            [plantName] : true
+        });
+    };
+
     return (
         <div>
             <form onSubmit={handleSearch}>
@@ -43,15 +54,15 @@ function PlantSearch() {
             </form>
             <ul class="divide-y divide-gray-100 w-2/4 m-auto">
                 {results.map((result, index) => (
-                        <li class="flex justify-between gap-x-6 py-2">
+                        <li class={`flex justify-between gap-x-6 py-2 rounded-md my-px ${index % 2 === 0 ? 'bg-sky-50' : 'bg-white'}`}>
                             <div class="flex min-w-0 gap-x-4">
                                 <div class="min-w-0 flex-auto">
-                                    <p class="text-sm font-semibold leading-6 text-gray-900"><FontAwesomeIcon icon={faLeaf} />  {result.common_name}</p>
+                                    <p class="text-sm px-1 font-semibold leading-6 text-gray-900"><FontAwesomeIcon icon={faLeaf} className='px-3' />  {result.common_name}</p>
                                 </div>
                             </div>
                             <div class="hidden sm:flex sm:flex-row sm:items-center sm:space-x-2">
                                 <p class="text-sm leading-6 text-gray-900">{result.watering}</p>
-                                <button class="text-xs leading-5 text-gray-500">Add to Garden</button>
+                                <button onClick={() => addToUserGarden(result.common_name)} class="text-xs leading-5 text-gray-500">Add to Garden</button>
                             </div>
                         </li>
                 ))}

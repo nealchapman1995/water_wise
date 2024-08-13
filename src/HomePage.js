@@ -1,17 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { ref, get } from "firebase/database";
 import { database } from "./configuration"; // Your Firebase database configuration
-import { getAuth, signOut } from 'firebase/auth';
-import { useNavigate } from "react-router-dom";
 
 const HomePage = ({ user }) => {
     const [data, setData] = useState(null);
     const [selectedCity, setSelectedCity] = useState('');
     const [inputCity, setInputCity] = useState('');
     const [error, setError] = useState('');
+    const [userPlants, setUserPlants] = useState('')
 
-    const auth = getAuth();
-    const navigate = useNavigate();
 
     const getUserData = async (user) => {
         const userID = user.uid;
@@ -22,6 +19,8 @@ const HomePage = ({ user }) => {
                 if (snapshot.exists()) {
                     const userData = snapshot.val();
                     const userCity = userData.city;
+                    const userPlants = userData.plants;
+                    setUserPlants(Object.keys(userPlants));
                     setSelectedCity(userCity); // Corrected function call
                     setInputCity(userCity);
                 }
@@ -71,16 +70,6 @@ const HomePage = ({ user }) => {
         //setSelectedDay(null);
     };
 
-    const signOutUser = () => {
-        signOut(auth)
-            .then(() => {
-                navigate('./')
-            })
-            .catch((error) => {
-                console.error("Error signing out");
-            });
-    };
-
       const groupedData = data?.list.reduce((acc, item) => {
         const date = new Date(item.dt * 1000).toLocaleDateString();
         if (!acc[date]) {
@@ -128,7 +117,15 @@ const HomePage = ({ user }) => {
           ))}
         </div>
       )}
-      <button onClick={signOutUser}>Sign Out</button>
+      <h3>Your Plants</h3>
+      <ul>
+        {userPlants.length > 0 ? (userPlants.map((plantName, index) => (
+            <li key={index}>{plantName}</li>
+        ))
+    ) : (
+        <p>You don't have any plants</p>
+    )}
+      </ul>
     </div>
   );
 };

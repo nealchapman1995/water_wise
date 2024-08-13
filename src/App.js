@@ -49,7 +49,7 @@ function App() {
         <Route path="/" element={user ? <Navigate to="/home" /> : <SignIn setUser={setUser} />} />
         <Route path="/signup" element={<SignUp setUser={setUser} />} />
         <Route path="/home" element={user ? <HomePage user={user} /> : <Navigate to="/" />} />
-        <Route path='/plantsearch' element={<PlantSearch />} />
+        <Route path='/plantsearch' element={<PlantSearch user={user} />} />
       </Routes>
     </Router>
   );
