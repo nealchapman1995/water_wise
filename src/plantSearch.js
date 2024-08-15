@@ -52,12 +52,17 @@ function PlantSearch({ user }) {
                     Search
                 </button>
             </form>
+            <div className='border-solid border-orange-950'>
             <ul class="divide-y divide-gray-100 w-2/4 m-auto">
                 {results.map((result, index) => (
-                        <li class={`flex justify-between gap-x-6 py-2 rounded-md my-px ${index % 2 === 0 ? 'bg-sky-50' : 'bg-white'}`}>
+                        <li class={`flex justify-between gap-x-6 py-2 rounded-xl my-px ${index % 2 === 0 ? 'bg-sky-50' : 'bg-white'}`}>
                             <div class="flex min-w-0 gap-x-4">
                                 <div class="min-w-0 flex-auto">
-                                    <p class="text-sm px-1 font-semibold leading-6 text-gray-900"><FontAwesomeIcon icon={faLeaf} className='px-3' />  {result.common_name}</p>
+                                    <p class="text-sm px-1 font-semibold leading-6 text-gray-900">{result.default_image && result.default_image.thumbnail ? (
+                                                                                                        <img className='h-12 rounded-full inline' src={`${result.default_image.thumbnail}`} alt="Plant thumbnail" />
+                                                                                                    ) : (
+                                                                                                        <FontAwesomeIcon className='h-10 ' icon={faLeaf} alt="Plant icon" />
+                                                                                                    )} {result.common_name}</p>
                                 </div>
                             </div>
                             <div class="hidden sm:flex sm:flex-row sm:items-center sm:space-x-2">
@@ -67,6 +72,7 @@ function PlantSearch({ user }) {
                         </li>
                 ))}
             </ul>
+            </div>
         </div>
     );
 }

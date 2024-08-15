@@ -825,6 +825,10 @@ select {
   display: block;
 }
 
+.inline {
+  display: inline;
+}
+
 .flex {
   display: flex;
 }
@@ -863,6 +867,18 @@ select {
 
 .h-10 {
   height: 2.5rem;
+}
+
+.h-5 {
+  height: 1.25rem;
+}
+
+.h-12 {
+  height: 3rem;
+}
+
+.h-11 {
+  height: 2.75rem;
 }
 
 .min-h-full {
@@ -990,12 +1006,25 @@ select {
   border-radius: 0.375rem;
 }
 
+.rounded-xl {
+  border-radius: 0.75rem;
+}
+
 .border-0 {
   border-width: 0px;
 }
 
 .border {
   border-width: 1px;
+}
+
+.border-solid {
+  border-style: solid;
+}
+
+.border-orange-950 {
+  --tw-border-opacity: 1;
+  border-color: rgb(67 20 7 / var(--tw-border-opacity));
 }
 
 .bg-gray-800 {
