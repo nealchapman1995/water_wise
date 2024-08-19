@@ -12,8 +12,6 @@ function App() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  console.log("App component rendered");
-
   useEffect(() => {
     console.log("Setting up auth state listener");
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
