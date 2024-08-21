@@ -119,7 +119,7 @@ const HomePage = ({ user }) => {
                 <li key={index}>
                 <span>{plantName}</span>
                 <span>Last Watered: {lastWatered}</span>
-                <button onClick={() => waterPlants(plantName)}>Water Plant</button>
+                <button onClick={() => waterPlants(plantName)}>Water Plant with Hose</button>
                 </li>
             );
             })
