@@ -79,19 +79,22 @@ const HomePage = ({ user }) => {
         return { date, averagePop: averagePop.toFixed(1), temp_min: groupedData[date].temp_min.toFixed(0), temp_max: groupedData[date].temp_max.toFixed(0), icon: groupedData[date].icon };
       }) : [];
 
-      const waterPlants = async (plantName) => {
+      const waterPlantsWithHose = async (plantName) => {
         const timestamp = new Date().toISOString();
         const userPlantsRef = ref(database, `users/${user.uid}/plants/${plantName}`);
         await update(userPlantsRef, { lastWatered: timestamp });
 
         setUserPlants(prevState => ({
-            ...prevState,
+            ...prevState, //Saving previous state and then updating it with the newest watered date
             [plantName]: {
                 ...prevState[plantName],
                 lastWatered: timestamp
             }
         }));
       };
+
+      const waterPlantsWithRain = async (plantName) => {
+      }
 
   return (
     <div>
@@ -119,7 +122,8 @@ const HomePage = ({ user }) => {
                 <li key={index}>
                 <span>{plantName}</span>
                 <span>Last Watered: {lastWatered}</span>
-                <button onClick={() => waterPlants(plantName)}>Water Plant with Hose</button>
+                <button onClick={() => waterPlantsWithRain(plantName)}>Water Plant with Rain</button>
+                <button onClick={() => waterPlantsWithHose(plantName)}>Water Plant with Hose</button>
                 </li>
             );
             })
