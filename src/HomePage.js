@@ -6,8 +6,7 @@ const HomePage = ({ user }) => {
     const [data, setData] = useState(null);
     const [selectedCity, setSelectedCity] = useState('');
     const [inputCity, setInputCity] = useState('');
-    const [userPlants, setUserPlants] = useState('')
-
+    const [userPlants, setUserPlants] = useState({}); // Initialize as an empty object
 
     const getUserData = async (user) => {
         const userID = user.uid;
@@ -18,7 +17,7 @@ const HomePage = ({ user }) => {
                 if (snapshot.exists()) {
                     const userData = snapshot.val();
                     const userCity = userData.city;
-                    const userPlants = userData.plants;
+                    const userPlants = userData.plants || {}; // Default to an empty object if plants don't exist
                     setUserPlants(userPlants);
                     setSelectedCity(userCity); 
                     setInputCity(userCity);
@@ -84,7 +83,7 @@ const HomePage = ({ user }) => {
         await update(userPlantsRef, { lastWatered: timestamp });
 
         setUserPlants(prevState => ({
-            ...prevState, //Saving previous state and then updating it with the newest watered date
+            ...prevState, // Saving previous state and then updating it with the newest watered date
             [plantName]: {
                 ...prevState[plantName],
                 lastWatered: timestamp
@@ -100,31 +99,30 @@ const HomePage = ({ user }) => {
 
         if (todayWeather && todayWeather.averagePop > 50) {
             const timestamp = new Date().toISOString();
-        const userPlantsRef = ref(database, `users/${user.uid}/plants/${plantName}`);
-        await update(userPlantsRef, 
-            { lastWatered: timestamp
-            });
+            const userPlantsRef = ref(database, `users/${user.uid}/plants/${plantName}`);
+            await update(userPlantsRef, 
+                { lastWatered: timestamp
+                });
 
-        setUserPlants(prevState => ({
-            ...prevState, //Saving previous state and then updating it with the newest watered date
-            [plantName]: {
-                ...prevState[plantName],
-                lastWatered: timestamp
-            }
-        }));
-        const waterSaved = 0.125;
-        const userProfileRef = ref(database, `users/${user.uid}/waterusage`);
-        const newEventRef = push(userProfileRef);
-        await set(newEventRef, {
-            plantName,
-            waterSaved,
-            timestamp
-        });
+            setUserPlants(prevState => ({
+                ...prevState, // Saving previous state and then updating it with the newest watered date
+                [plantName]: {
+                    ...prevState[plantName],
+                    lastWatered: timestamp
+                }
+            }));
+            const waterSaved = 0.125;
+            const userProfileRef = ref(database, `users/${user.uid}/waterusage`);
+            const newEventRef = push(userProfileRef);
+            await set(newEventRef, {
+                plantName,
+                waterSaved,
+                timestamp
+            });
+        } else {
+            alert("can't water with rain today");
+        }
       }
-      else {
-        alert("can't water with rain today")
-      }
-    }
 
   return (
     <div>
@@ -141,28 +139,29 @@ const HomePage = ({ user }) => {
         </div>
       )}
       <h3>Your Plants</h3>
-    <ul>
-        {Object.keys(userPlants).length > 0 ? ( //checking if the plants array exists at all
+      <ul>
+        {Object.keys(userPlants).length > 0 ? (
             Object.keys(userPlants).map((plantName, index) => {
-            const lastWatered = userPlants[plantName]?.lastWatered  //checking if the last watered data exisits, if it doesn't it just sets lastwattered to Never
-                ? new Date(userPlants[plantName].lastWatered).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) 
-                : 'Never';
+                const lastWatered = userPlants[plantName]?.lastWatered  // checking if the last watered data exists, if it doesn't it just sets last watered to "Never"
+                    ? new Date(userPlants[plantName].lastWatered).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) 
+                    : 'Never';
 
-            return (
-                <li key={index}>
-                <span>{plantName}</span>
-                <span>Last Watered: {lastWatered}</span>
-                <button onClick={() => waterPlantsWithRain(plantName)}>Water Plant with Rain</button>
-                <button onClick={() => waterPlantsWithHose(plantName)}>Water Plant with Hose</button>
-                </li>
-            );
+                return (
+                    <li key={index}>
+                    <span>{plantName}</span>
+                    <span>Last Watered: {lastWatered}</span>
+                    <button onClick={() => waterPlantsWithRain(plantName)}>Water Plant with Rain</button>
+                    <button onClick={() => waterPlantsWithHose(plantName)}>Water Plant with Hose</button>
+                    </li>
+                );
             })
         ) : (
-            <p>You don't have any plants</p>
+            <p>You don't have any plants yet. Start by adding some!</p> // Message to display if no plants are available
         )}
-    </ul>
+      </ul>
     </div>
   );
 };
 
 export default HomePage;
+
