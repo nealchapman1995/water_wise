@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ref, get, update } from "firebase/database";
+import { ref, get, update, push, set } from "firebase/database";
 import { database } from "./configuration"; // Your Firebase database configuration
 
 const HomePage = ({ user }) => {
@@ -50,7 +50,6 @@ const HomePage = ({ user }) => {
             return response.json();
           })
           .then(data => {
-            console.log("Data fetched:", data); // Debug log
             setData(data);
           })
           .catch(error => {
@@ -94,7 +93,38 @@ const HomePage = ({ user }) => {
       };
 
       const waterPlantsWithRain = async (plantName) => {
+        const today = new Date().toLocaleDateString();
+
+        const todayWeather = dates.find(dateObj => dateObj.date === today);
+        console.log(todayWeather.averagePop);
+
+        if (todayWeather && todayWeather.averagePop > 50) {
+            const timestamp = new Date().toISOString();
+        const userPlantsRef = ref(database, `users/${user.uid}/plants/${plantName}`);
+        await update(userPlantsRef, 
+            { lastWatered: timestamp
+            });
+
+        setUserPlants(prevState => ({
+            ...prevState, //Saving previous state and then updating it with the newest watered date
+            [plantName]: {
+                ...prevState[plantName],
+                lastWatered: timestamp
+            }
+        }));
+        const waterSaved = 0.125;
+        const userProfileRef = ref(database, `users/${user.uid}/waterusage`);
+        const newEventRef = push(userProfileRef);
+        await set(newEventRef, {
+            plantName,
+            waterSaved,
+            timestamp
+        });
       }
+      else {
+        alert("can't water with rain today")
+      }
+    }
 
   return (
     <div>

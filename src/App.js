@@ -13,9 +13,7 @@ function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    console.log("Setting up auth state listener");
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      console.log("Auth state changed:", currentUser);
       if (currentUser) {
         setUser(currentUser);
         setLoading(false);
@@ -37,8 +35,6 @@ function App() {
   if (loading) {
     return <div>Loading...</div>;
   }
-
-  console.log("Rendering main content");
 
   return (
     <Router>
