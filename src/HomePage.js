@@ -13,12 +13,34 @@ const HomePage = ({ user }) => {
         const userRef = ref(database, 'users/' + userID);
 
         get(userRef)
-            .then((snapshot) => {
+            .then(async (snapshot) => {
                 if (snapshot.exists()) {
                     const userData = snapshot.val();
                     const userCity = userData.city;
                     const userPlants = userData.plants || {}; // Default to an empty object if plants don't exist
-                    setUserPlants(userPlants);
+
+                    const plantDataPromises = Object.keys(userPlants).map(async (plantName) => {
+                        const plantRef = ref(database, `plants/data`); //get plants data using the name on the usersprofile
+                        const snapshot = await get(plantRef);
+                        let plantData = null;
+                        
+                        snapshot.forEach((childSnapshot) => {
+                            const plant = childSnapshot.val();
+                            if (plant.common_name === plantName) {
+                                plantData = { ...plant, ...userPlants[plantName] };
+                            }
+                        });
+                        console.log(plantData);
+                        return plantData;
+                    });
+
+                    const combinedPlantData = (await Promise.all(plantDataPromises)).filter(Boolean);
+
+                    setUserPlants(combinedPlantData.reduce((acc, plant) => {
+                        acc[plant.common_name] = plant; //combines the data from the database and adds it to an object with the common name being the key
+                        return acc;
+                    }, {}));
+
                     setSelectedCity(userCity); 
                     setInputCity(userCity);
                 }
@@ -142,16 +164,19 @@ const HomePage = ({ user }) => {
       <ul>
         {Object.keys(userPlants).length > 0 ? (
             Object.keys(userPlants).map((plantName, index) => {
-                const lastWatered = userPlants[plantName]?.lastWatered  // checking if the last watered data exists, if it doesn't it just sets last watered to "Never"
-                    ? new Date(userPlants[plantName].lastWatered).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) 
+                const plant = userPlants[plantName];
+                const lastWatered = plant?.lastWatered  // checking if the last watered data exists, if it doesn't it just sets last watered to "Never"
+                    ? new Date(plant.lastWatered).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) 
                     : 'Never';
+                const wateringSchedule = plant.watering;
 
                 return (
                     <li key={index}>
-                    <span>{plantName}</span>
+                    <span>{plant.common_name}</span>
                     <span>Last Watered: {lastWatered}</span>
-                    <button onClick={() => waterPlantsWithRain(plantName)}>Water Plant with Rain</button>
-                    <button onClick={() => waterPlantsWithHose(plantName)}>Water Plant with Hose</button>
+                    <span>{wateringSchedule}</span>
+                    <button onClick={() => waterPlantsWithRain(plant.common_name)}>Water Plant with Rain</button>
+                    <button onClick={() => waterPlantsWithHose(plant.common_name)}>Water Plant with Hose</button>
                     </li>
                 );
             })
@@ -159,9 +184,11 @@ const HomePage = ({ user }) => {
             <p>You don't have any plants yet. Start by adding some!</p> // Message to display if no plants are available
         )}
       </ul>
+      
     </div>
   );
 };
 
 export default HomePage;
+
 
