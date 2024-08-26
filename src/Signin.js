@@ -49,6 +49,9 @@ const SignInForm = ({ setUser }) => {
             </form>
         </div>
         <p className="mt-10 text-center text-sm text-gray-500">
+            For test account, please utilize email: demo@waterwise.com Password: 123456
+          </p>
+        <p className="mt-10 text-center text-sm text-gray-500">
             <a href="/signup" className="font-semibold leading-6 text-sky-600 hover:text-sky-500">
               Make an Account Now!
             </a>
