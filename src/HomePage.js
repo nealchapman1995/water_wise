@@ -169,7 +169,7 @@ const HomePage = ({ user }) => {
                 const lastWatered = plant?.lastWatered  // checking if the last watered data exists, if it doesn't it just sets last watered to "Never"
                     ? new Date(plant.lastWatered).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) 
                     : 'Never';
-                const wateringSchedule = plant.watering;
+                //const wateringSchedule = plant.watering;
 
                 return (
                     <div key={index} className='group relative rounded-3xl'>
