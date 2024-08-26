@@ -30,7 +30,6 @@ const HomePage = ({ user }) => {
                                 plantData = { ...plant, ...userPlants[plantName] };
                             }
                         });
-                        console.log(plantData);
                         return plantData;
                     });
 
@@ -144,7 +143,7 @@ const HomePage = ({ user }) => {
         } else {
             alert("can't water with rain today");
         }
-      }
+    }
 
   return (
     <div>
@@ -152,6 +151,7 @@ const HomePage = ({ user }) => {
       <h1>Hows the weather in {inputCity}?</h1>
       {data && (
         <div className='dayContainer'>
+            <p>{dates[0].averagePop}</p>
           {dates.map((item, index) => (
             <div className='dayBox' key={index}>
               <h5>{item.date}</h5>
@@ -160,8 +160,9 @@ const HomePage = ({ user }) => {
           ))}
         </div>
       )}
+      <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
       <h3>Your Plants</h3>
-      <ul>
+      <div className='mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8'>
         {Object.keys(userPlants).length > 0 ? (
             Object.keys(userPlants).map((plantName, index) => {
                 const plant = userPlants[plantName];
@@ -171,20 +172,33 @@ const HomePage = ({ user }) => {
                 const wateringSchedule = plant.watering;
 
                 return (
-                    <li key={index}>
-                    <span>{plant.common_name}</span>
-                    <span>Last Watered: {lastWatered}</span>
-                    <span>{wateringSchedule}</span>
-                    <button onClick={() => waterPlantsWithRain(plant.common_name)}>Water Plant with Rain</button>
-                    <button onClick={() => waterPlantsWithHose(plant.common_name)}>Water Plant with Hose</button>
-                    </li>
+                    <div key={index} className='group relative rounded-3xl'>
+                        <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-3xl bg-gray-200 h-40">
+                            <img
+                            alt='Plant'
+                            src={plant.default_image.medium_url}
+                            className="h-full w-full object-cover object-center lg:h-full lg:w-full"
+                            />
+                        </div>
+                        <div className="mt-4 flex justify-between">
+                        <div>
+                        <h3 className="text-sm text-gray-700">
+                            <span aria-hidden="true" className="absolute inset-0" />
+                            {plant.common_name}
+                        </h3>
+                        <p className="mt-1 text-sm text-gray-500">{lastWatered}</p>
+                        </div>
+                        <button onClick={() => waterPlantsWithRain(plant.common_name)}>Water Plant with Rain</button>
+                        <button onClick={() => waterPlantsWithHose(plant.common_name)}>Water Plant with Hose</button>
+                    </div>
+                    </div>
                 );
             })
         ) : (
             <p>You don't have any plants yet. Start by adding some!</p> // Message to display if no plants are available
         )}
-      </ul>
-      
+      </div>
+      </div>
     </div>
   );
 };
