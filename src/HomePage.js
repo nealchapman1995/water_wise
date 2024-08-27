@@ -172,8 +172,8 @@ const HomePage = ({ user }) => {
                 //const wateringSchedule = plant.watering;
 
                 return (
-                    <div key={index} className='group relative rounded-3xl'>
-                        <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-3xl bg-gray-200 h-40">
+                    <div key={index} className='group relative rounded-2xl'>
+                        <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-2xl bg-gray-200 h-40">
                             <img
                             alt='Plant'
                             src={plant.default_image.medium_url}
