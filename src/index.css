@@ -17,4 +17,8 @@ code {
     monospace;
 }
 
+button {
+  z-index: 10;
+}
+
 

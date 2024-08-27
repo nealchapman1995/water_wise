@@ -100,6 +100,7 @@ const HomePage = ({ user }) => {
 
       const waterPlantsWithHose = async (plantName) => {
         const timestamp = new Date().toISOString();
+        console.log("watered with hose");
         const userPlantsRef = ref(database, `users/${user.uid}/plants/${plantName}`);
         await update(userPlantsRef, { lastWatered: timestamp });
 
