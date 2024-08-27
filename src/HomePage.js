@@ -188,8 +188,8 @@ const HomePage = ({ user }) => {
                         </h3>
                         <p className="mt-1 text-sm text-gray-500">{lastWatered}</p>
                         </div>
-                        <button onClick={() => waterPlantsWithRain(plant.common_name)}>Water Plant with Rain</button>
-                        <button onClick={() => waterPlantsWithHose(plant.common_name)}>Water Plant with Hose</button>
+                        <button onClick={() => waterPlantsWithRain(plant.common_name)}>Water with Rain</button>
+                        <button onClick={() => waterPlantsWithHose(plant.common_name)}>Water with Hose</button>
                     </div>
                     </div>
                 );
