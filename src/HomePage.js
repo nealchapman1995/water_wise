@@ -190,7 +190,7 @@ const HomePage = ({ user }) => {
                 );
             })
         ) : (
-            <p>You don't have any plants yet. Start by adding some!</p> // Message to display if no plants are available
+            <p>You don't have any plants yet. Start by adding some on the Plant Search feature</p> // Message to display if no plants are available
         )}
       </div>
       </div>
