@@ -7,6 +7,7 @@ const HomePage = ({ user }) => {
     const [selectedCity, setSelectedCity] = useState('');
     const [inputCity, setInputCity] = useState('');
     const [userPlants, setUserPlants] = useState({}); // Initialize as an empty object
+    const [rainProbability, setRainProbability] = useState(0);
 
     const getUserData = async (user) => {
         const userID = user.uid;
@@ -113,6 +114,12 @@ const HomePage = ({ user }) => {
         }));
       };
 
+      useEffect(() => {
+        if (dates.length > 0) {
+          setRainProbability(parseFloat(dates[0].averagePop)); // Set today's rain probability
+        }
+      }, [dates]);
+
       const waterPlantsWithRain = async (plantName) => {
         const today = new Date().toLocaleDateString();
 
@@ -183,8 +190,8 @@ const HomePage = ({ user }) => {
                         </h3>
                         <p className="mt-1 text-sm text-gray-500">{lastWatered}</p>
                         </div>
-                        <button onClick={() => waterPlantsWithRain(plant.common_name)}>Water with Rain</button>
-                        <button onClick={() => waterPlantsWithHose(plant.common_name)}>Water with Hose</button>
+                        <button onClick={() => waterPlantsWithRain(plant.common_name)} disabled={rainProbability< 50} className={`shadow-sm  text-sky-950 rounded-lg px-3 py-2 text-sm font-medium ${rainProbability < 50 ? 'bg-gray-400 cursor-not-allowed shadow-gray-400' : 'bg-lite-blue hover:bg-teal shadow-teal'}`}>Water with Rain</button>
+                        <button onClick={() => waterPlantsWithHose(plant.common_name)} className=' mx-3 shadow-sm shadow-teal bg-lite-blue text-sky-950 hover:bg-teal rounded-lg px-3 py-2 text-sm font-medium'>Water with Hose</button>
                     </div>
                     </div>
                 );
