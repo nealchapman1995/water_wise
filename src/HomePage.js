@@ -2,12 +2,12 @@ import React, { useEffect, useState, useMemo } from 'react';
 import { ref, get, update, push, set } from "firebase/database";
 import { database } from "./configuration"; // Your Firebase database configuration
 
-const HomePage = ({ user }) => {
+const HomePage = ({ user }) => { //Initialize all of the states that I use in the homepage
     const [data, setData] = useState(null);
     const [selectedCity, setSelectedCity] = useState('');
     const [inputCity, setInputCity] = useState('');
     const [userPlants, setUserPlants] = useState({}); 
-    const [rainProbability, setRainProbability] = useState(0); // Initialize rainProbability
+    const [rainProbability, setRainProbability] = useState(0); 
 
     const getUserData = async (user) => {
         const userID = user.uid;
