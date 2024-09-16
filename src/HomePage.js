@@ -207,10 +207,10 @@ const HomePage = ({ user }) => { //Initialize all of the states that I use in th
                                             disabled={rainProbability < 50} // Disable button if rain probability is less than 50%
                                             style={{ backgroundColor: rainProbability < 50 ? 'grey' : 'blue' }}
                                             onClick={() => waterPlantsWithRain(plant.common_name)}
-                                        >
+                                            className='rounded-full'>
                                             Water with Rain
                                         </button>
-                                        <button onClick={() => waterPlantsWithHose(plant.common_name)}>Water with Hose</button>
+                                        <button onClick={() => waterPlantsWithHose(plant.common_name)} className='rounded-full'>Water with Hose</button>
                                     </div>
                                 </div>
                             );
