@@ -216,7 +216,7 @@ const HomePage = ({ user }) => { //Initialize all of the states that I use in th
                             );
                         })
                     ) : (
-                        <p>You don't have any plants yet. Start by adding some on the Plant Search feature</p>
+                        <p>You don't have any plants yet! Start by adding some on the Plant Search feature</p>
                     )}
                 </div>
             </div>
