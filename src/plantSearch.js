@@ -61,7 +61,7 @@ function PlantSearch({ user }) {
                                     <p class="text-sm px-1 font-semibold leading-6 text-gray-900">{result.default_image && result.default_image.thumbnail ? (
                                                                                                         <img className='h-12 rounded-full inline' src={`${result.default_image.thumbnail}`} alt="Plant thumbnail" />
                                                                                                     ) : (
-                                                                                                        <FontAwesomeIcon className='h-10 ' icon={faLeaf} alt="Plant icon" /> //if there is no image, show a icon of a plant
+                                                                                                        <FontAwesomeIcon className='h-10 ' icon={faLeaf} alt="Plant icon" /> //if there is no image, show an icon of a plant
                                                                                                     )} {result.common_name}</p>
                                 </div>
                             </div>
