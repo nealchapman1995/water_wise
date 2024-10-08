@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ref, get, update } from "firebase/database";
-import { database } from "./configuration"; // Adjust the path as needed
+import { database } from "./configuration"; 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLeaf } from '@fortawesome/free-solid-svg-icons';
 
