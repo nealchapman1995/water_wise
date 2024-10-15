@@ -18,7 +18,7 @@ function PlantSearch({ user }) {
 
         snapshot.forEach((childSnapshot) => {
             const plant = childSnapshot.val();
-            // Filter plants by checking if the common_name includes the searchTerm (case-insensitive)
+            // Filter plants by checking if the common_name includes the searchTerm case-insensitive
             if (plant.common_name.toLowerCase().includes(searchTerm.toLowerCase())) {
                 searchResults.push(plant);
             }
