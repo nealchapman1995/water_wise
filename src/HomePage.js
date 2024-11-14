@@ -195,7 +195,7 @@ const HomePage = ({ user }) => { //Initialize all of the states that I use in th
                                             className="h-full w-full object-cover object-center lg:h-full lg:w-full"
                                         />
                                     </div>
-                                    <div className="mt-4 flex justify-between">
+                                    <div className="mt-4 flex items-center justify-between">
                                         <div>
                                             <h3 className="text-sm text-gray-700">
                                                 <span aria-hidden="true" className="absolute inset-0" />
@@ -203,14 +203,18 @@ const HomePage = ({ user }) => { //Initialize all of the states that I use in th
                                             </h3>
                                             <p className="mt-1 text-sm text-gray-500">{lastWatered}</p>
                                         </div>
-                                        <button
-                                            disabled={rainProbability < 50} // Disable button if rain probability is less than 50%
-                                            style={{ backgroundColor: rainProbability < 50 ? 'grey' : 'blue' }}
-                                            onClick={() => waterPlantsWithRain(plant.common_name)}
-                                            className='rounded-full'>
-                                            Water with Rain
-                                        </button>
-                                        <button onClick={() => waterPlantsWithHose(plant.common_name)} className='rounded-full'>Water with Hose</button>
+                                        <div className="flex gap-2">
+                                            <button
+                                                disabled={rainProbability < 50} // Disable button if rain probability is less than 50%
+                                                
+                                                onClick={() => waterPlantsWithRain(plant.common_name)}
+                                                className={`rounded-full w-24 h-16 ${
+                                                    rainProbability < 50 ? 'bg-gray-400' : 'bg-blue-500'
+                                                }`}>
+                                                Water with Rain
+                                            </button>
+                                            <button onClick={() => waterPlantsWithHose(plant.common_name)} className="rounded-full w-24 h-10 ">Water with Hose</button>
+                                        </div>
                                     </div>
                                 </div>
                             );
