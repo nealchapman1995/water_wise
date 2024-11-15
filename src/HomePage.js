@@ -187,7 +187,7 @@ const HomePage = ({ user }) => { //Initialize all of the states that I use in th
                                 : 'Never';
 
                             return (
-                                <div key={index} className='group relative rounded-2xl'>
+                                <div key={index} className='group relative w-72 rounded-2xl'>
                                     <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-2xl bg-gray-200 h-40">
                                         <img
                                             alt='Plant'
@@ -195,8 +195,8 @@ const HomePage = ({ user }) => { //Initialize all of the states that I use in th
                                             className="h-full w-full object-cover object-center lg:h-full lg:w-full"
                                         />
                                     </div>
-                                    <div className="mt-4 flex items-center justify-between">
-                                        <div>
+                                    <div className="mt-0 flex items-center justify-between">
+                                        <div className='h-24'>
                                             <h3 className="text-sm text-gray-700">
                                                 <span aria-hidden="true" className="absolute inset-0" />
                                                 {plant.common_name}
@@ -223,6 +223,32 @@ const HomePage = ({ user }) => { //Initialize all of the states that I use in th
                         <p>You don't have any plants yet! Start by adding some on the Plant Search feature</p>
                     )}
                 </div>
+            </div>
+            <div>
+            <ul className="divide-y divide-gray-100 border-solid border-2 border-indigo-600 px-40 py-5">
+            {Object.keys(userPlants).length > 0 ? (
+                        Object.keys(userPlants).map((plantName, index) => {
+                            const plant = userPlants[plantName];
+                            const lastWatered = plant?.lastWatered
+                                ? new Date(plant.lastWatered).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+                                : 'Never';
+
+                            return (
+                                <li key={index} className="flex justify-between gap-x-6 py-5">
+                                    <div className="flex min-w-0 gap-x-4">
+                                        <img alt="" src={plant.default_image.medium_url} className="bg-center bg-no-repeat aspect-[3/4] bg-cover rounded-lg w-[70px]" />
+                                        <div className="min-w-0 flex-auto">
+                                            <p className="text-sm/6 font-semibold text-gray-900">{plant.common_name}</p>
+                                            <p className="mt-1 truncate text-xs/5 text-gray-500">{lastWatered}</p>
+                                        </div>
+                                    </div>
+                                </li>
+                            );
+                        })
+                    ) : (
+                        <p>You don't have any plants yet! Start by adding some on the Plant Search feature</p>
+                    )}
+            </ul>
             </div>
         </div>
     );
