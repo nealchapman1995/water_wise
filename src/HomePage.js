@@ -224,8 +224,9 @@ const HomePage = ({ user }) => { //Initialize all of the states that I use in th
                     )}
                 </div>
             </div>
-            <div>
-            <ul className="divide-y divide-gray-100 border-solid border-2 border-indigo-600 px-40 py-5">
+            <div className='bdorder-solid border-2 border-indigo-600 px-40 py-5'>
+            <h3 class="text-[#0d1c12] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">Plants</h3>
+            <ul className="divide-y divide-gray-100">
             {Object.keys(userPlants).length > 0 ? (
                         Object.keys(userPlants).map((plantName, index) => {
                             const plant = userPlants[plantName];
