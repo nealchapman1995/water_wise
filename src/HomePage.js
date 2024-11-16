@@ -224,7 +224,7 @@ const HomePage = ({ user }) => { //Initialize all of the states that I use in th
                     )}
                 </div>
             </div>
-            <div className='bdorder-solid border-2 border-indigo-600 px-40 py-5'>
+            <div className='px-40 py-5'>
             <h3 class="text-[#0d1c12] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">Plants</h3>
             <ul className="divide-y divide-gray-100">
             {Object.keys(userPlants).length > 0 ? (
@@ -237,12 +237,23 @@ const HomePage = ({ user }) => { //Initialize all of the states that I use in th
                             return (
                                 <li key={index} className="flex justify-between gap-x-6 py-5">
                                     <div className="flex min-w-0 gap-x-4">
-                                        <img alt="" src={plant.default_image.medium_url} className="bg-center bg-no-repeat aspect-[3/4] bg-cover rounded-lg w-[70px]" />
-                                        <div className="min-w-0 flex-auto">
-                                            <p className="text-sm/6 font-semibold text-gray-900">{plant.common_name}</p>
-                                            <p className="mt-1 truncate text-xs/5 text-gray-500">{lastWatered}</p>
+                                        <img alt="Plant" src={plant.default_image.medium_url} className="bg-center bg-no-repeat aspect-[3/4] bg-cover rounded-lg w-[70px]" />
+                                        <div className="flex flex-1 flex-col justify-center">
+                                            <p className="text-[#0d1c12] text-base font-medium leading-normal">{plant.common_name}</p>
+                                            <p className="text-[#5180b0] text-sm font-normal leading-normal">Last Watered Date: {lastWatered}</p>
+                                            <p className="text-[#5180b0] text-sm font-normal leading-normal">Next Water Date (work in progress)</p>
                                         </div>
-                                    </div>
+                                        </div>
+                                        <div className="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
+                                            <button
+                                            className="flex w-36 cursor-pointer items-center justify-center overflow-hidden rounded-full h-8 px-4 bg-[#F0F2F5] text-[#141414] text-sm font-medium leading-normal">
+                                            <span class="truncate">Water by rain</span>
+                                            </button>
+                                            <button
+                                            className=" w-36 cursor-pointer items-center justify-center overflow-hidden rounded-full h-8 px-4 bg-[#F0F2F5] text-[#141414] text-sm font-medium leading-normal mt-4">
+                                            <span className="truncate">Water by hose</span>
+                                            </button>
+                                        </div>
                                 </li>
                             );
                         })
