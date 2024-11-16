@@ -240,8 +240,8 @@ const HomePage = ({ user }) => { //Initialize all of the states that I use in th
                                         <img alt="Plant" src={plant.default_image.medium_url} className="bg-center bg-no-repeat aspect-[3/4] bg-cover rounded-lg w-[70px]" />
                                         <div className="flex flex-1 flex-col justify-center">
                                             <p className="text-[#0d1c12] text-base font-medium leading-normal">{plant.common_name}</p>
-                                            <p className="text-[#5180b0] text-sm font-normal leading-normal">Last Watered Date: {lastWatered}</p>
-                                            <p className="text-[#5180b0] text-sm font-normal leading-normal">Next Water Date (work in progress)</p>
+                                            <p className="text-[#2c587d] text-sm font-normal leading-normal">Last Watered Date: {lastWatered}</p>
+                                            <p className="text-[#2c587d] text-sm font-normal leading-normal">Next Water Date (work in progress)</p>
                                         </div>
                                         </div>
                                         <div className="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
