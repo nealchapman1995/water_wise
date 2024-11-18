@@ -209,7 +209,7 @@ const HomePage = ({ user }) => { //Initialize all of the states that I use in th
                                                 
                                                 onClick={() => waterPlantsWithRain(plant.common_name)}
                                                 className={`rounded-full w-24 h-16 ${
-                                                    rainProbability < 50 ? 'bg-gray-400' : 'bg-blue-500'
+                                                    rainProbability < 50 ? 'bg-gray-400' : 'bg-blue-500 cursor-not-allowed'
                                                 }`}>
                                                 Water with Rain
                                             </button>
@@ -224,7 +224,20 @@ const HomePage = ({ user }) => { //Initialize all of the states that I use in th
                     )}
                 </div>
             </div>
+
             <div className='px-40 py-5'>
+            <div class="flex flex-wrap justify-between gap-3 p-4"><p class="text-[#141414] tracking-light text-[32px] font-bold leading-tight min-w-72">Welcome {user.displayName}</p></div>
+            <h3 class="text-[#141414] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">Today's weather</h3>
+            <div class="p-4 grid grid-cols-2">
+                <div class="flex flex-col gap-1 border-t border-solid border-t-[#DBE1E6] py-4 pr-2">
+                    <p class="text-[#3E4D5B] text-sm font-normal leading-normal">Hometown</p>
+                    <p class="text-[#141414] text-sm font-normal leading-normal">{inputCity}</p>
+                </div>
+                <div class="flex flex-col gap-1 border-t border-solid border-t-[#DBE1E6] py-4 pl-2">
+                    <p class="text-[#3E4D5B] text-sm font-normal leading-normal">Rain Probability</p>
+                    <p class="text-[#141414] text-sm font-normal leading-normal">{rainProbability}%</p>
+                </div>
+            </div>
             <h3 class="text-[#0d1c12] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">Plants</h3>
             <ul className="divide-y divide-gray-100">
             {Object.keys(userPlants).length > 0 ? (
