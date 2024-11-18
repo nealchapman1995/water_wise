@@ -245,11 +245,15 @@ const HomePage = ({ user }) => { //Initialize all of the states that I use in th
                                         </div>
                                         </div>
                                         <div className="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
-                                            <button
-                                            className="flex w-36 cursor-pointer items-center justify-center overflow-hidden rounded-full h-8 px-4 bg-[#F0F2F5] text-[#141414] text-sm font-medium leading-normal">
+                                            <button disabled={rainProbability < 50} // Disable button if rain probability is less than 50%
+                                                
+                                                onClick={() => waterPlantsWithRain(plant.common_name)}
+                                                className={`flex w-36 cursor-pointer items-center justify-center overflow-hidden rounded-full h-8 px-4 text-[#141414] text-sm font-medium leading-normal ${
+                                                    rainProbability < 50 ? 'bg-gray-400' : 'bg-[#6eb5f0]'
+                                                }`}>
                                             <span class="truncate">Water by rain</span>
                                             </button>
-                                            <button
+                                            <button onClick={() => waterPlantsWithHose(plant.common_name)}
                                             className=" w-36 cursor-pointer items-center justify-center overflow-hidden rounded-full h-8 px-4 bg-[#F0F2F5] text-[#141414] text-sm font-medium leading-normal mt-4">
                                             <span className="truncate">Water by hose</span>
                                             </button>
