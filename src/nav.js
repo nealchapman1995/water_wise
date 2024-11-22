@@ -27,7 +27,7 @@ export default function NavBar() {
     };
   return (
     <Disclosure as="nav" className="bg-inherit">
-      <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-20">
         <div className="relative flex h-16 items-center justify-between">
           <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
             {/* Mobile menu button*/}
@@ -54,8 +54,8 @@ export default function NavBar() {
                     href={item.href}
                     aria-current={item.current ? 'page' : undefined}
                     className={classNames(
-                      item.current ? 'bg-sky-900 text-black' : 'shadow-sm shadow-teal bg-lite-blue text-sky-950 hover:bg-teal ',
-                      'rounded-lg px-3 py-2 text-sm font-medium',
+                      item.current ? 'bg-sky-900 text-black' : ' bg-white text-sky-950 hover:bg-teal transition duration-300 ease-in-out ',
+                      'rounded-lg px-4 py-2 text-sm font-medium',
                     )}
                   >
                     {item.name}
@@ -67,7 +67,7 @@ export default function NavBar() {
           <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
             <button
               type="button"
-              className="relative rounded-full bg-sky-500 p-1 text-sky-950 hover:text-sky-200 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-sky-800"
+              className="relative rounded-full bg-white p-1 text-sky-950 hover:text-sky-200 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-sky-800"
             >
               <span className="absolute -inset-1.5" />
               <span className="sr-only">View notifications</span>

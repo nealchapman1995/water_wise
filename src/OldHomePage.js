@@ -169,6 +169,62 @@ const HomePage = ({ user }) => { //Initialize all of the states that I use in th
 
     return (
         <div>
+            <h1>Welcome, {user.displayName}!</h1>
+            <h1>Hows the weather in {inputCity}?</h1>
+            {data && (
+                <div className='dayContainer'>
+                    <p>Rain Probability today: {rainProbability}%</p>
+                </div>
+            )}
+            <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
+                <h3>Your Plants</h3>
+                <div className='mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8'>
+                    {Object.keys(userPlants).length > 0 ? (
+                        Object.keys(userPlants).map((plantName, index) => {
+                            const plant = userPlants[plantName];
+                            const lastWatered = plant?.lastWatered
+                                ? new Date(plant.lastWatered).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+                                : 'Never';
+
+                            return (
+                                <div key={index} className='group relative w-72 rounded-2xl'>
+                                    <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-2xl bg-gray-200 h-40">
+                                        <img
+                                            alt='Plant'
+                                            src={plant.default_image.medium_url}
+                                            className="h-full w-full object-cover object-center lg:h-full lg:w-full"
+                                        />
+                                    </div>
+                                    <div className="mt-0 flex items-center justify-between">
+                                        <div className='h-24'>
+                                            <h3 className="text-sm text-gray-700">
+                                                <span aria-hidden="true" className="absolute inset-0" />
+                                                {plant.common_name}
+                                            </h3>
+                                            <p className="mt-1 text-sm text-gray-500">{lastWatered}</p>
+                                        </div>
+                                        <div className="flex gap-2">
+                                            <button
+                                                disabled={rainProbability < 50} // Disable button if rain probability is less than 50%
+                                                
+                                                onClick={() => waterPlantsWithRain(plant.common_name)}
+                                                className={`rounded-full w-24 h-16 ${
+                                                    rainProbability < 50 ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-500'
+                                                }`} >
+                                                Water with Rain
+                                            </button>
+                                            <button onClick={() => waterPlantsWithHose(plant.common_name)} className="rounded-full w-24 h-10 ">Water with Hose</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            );
+                        })
+                    ) : (
+                        <p>You don't have any plants yet! Start by adding some on the Plant Search feature</p>
+                    )}
+                </div>
+            </div>
+
             <div className='px-40 py-5'>
             <div class="flex flex-wrap justify-between gap-3 p-4"><p class="text-[#141414] tracking-light text-[32px] font-bold leading-tight min-w-72">Welcome {user.displayName}</p></div>
             <h3 class="text-[#141414] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">Today's weather</h3>
@@ -226,7 +282,3 @@ const HomePage = ({ user }) => { //Initialize all of the states that I use in th
         </div>
     );
 };
-
-export default HomePage;
-
-
