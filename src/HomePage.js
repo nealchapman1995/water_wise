@@ -209,8 +209,8 @@ const HomePage = ({ user }) => { //Initialize all of the states that I use in th
                                                 
                                                 onClick={() => waterPlantsWithRain(plant.common_name)}
                                                 className={`rounded-full w-24 h-16 ${
-                                                    rainProbability < 50 ? 'bg-gray-400' : 'bg-blue-500 cursor-not-allowed'
-                                                }`}>
+                                                    rainProbability < 50 ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-500'
+                                                }`} >
                                                 Water with Rain
                                             </button>
                                             <button onClick={() => waterPlantsWithHose(plant.common_name)} className="rounded-full w-24 h-10 ">Water with Hose</button>
@@ -262,7 +262,7 @@ const HomePage = ({ user }) => { //Initialize all of the states that I use in th
                                                 
                                                 onClick={() => waterPlantsWithRain(plant.common_name)}
                                                 className={`flex w-36 cursor-pointer items-center justify-center overflow-hidden rounded-full h-8 px-4 text-[#141414] text-sm font-medium leading-normal ${
-                                                    rainProbability < 50 ? 'bg-gray-400' : 'bg-[#6eb5f0]'
+                                                    rainProbability < 50 ? 'bg-gray-400 cursor-not-allowed' : 'bg-[#6eb5f0]'
                                                 }`}>
                                             <span class="truncate">Water by rain</span>
                                             </button>
