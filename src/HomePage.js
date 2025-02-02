@@ -166,6 +166,55 @@ const HomePage = ({ user }) => { //Initialize all of the states that I use in th
             timestamp
         });
     }
+    const calculateNextWaterDate = (plant) => {
+        if (!plant.lastWatered) return "Today"; // Default to today if never watered
+    
+        const lastWateredDate = new Date(plant.lastWatered); 
+        if (isNaN(lastWateredDate)) return "Invalid date"; // Prevents issues with bad date parsing
+    
+        const wateringFrequency = plant.watering?.toLowerCase() || "average"; // Ensure it's lowercase for matching
+    
+        // Define watering intervals based on frequency
+        const wateringIntervals = {
+            frequent: 2,   // Every 2 days
+            average: 4,    // Every 4 days
+            minimum: 7     // Every 7 days
+        };
+    
+        const defaultWaterInterval = wateringIntervals[wateringFrequency] || 4;
+    
+        // Correctly add days to last watered date
+        let nextWaterDate = new Date(lastWateredDate);
+        nextWaterDate.setDate(lastWateredDate.getDate() + defaultWaterInterval); 
+    
+        // Adjust next water date if forecast predicts rain (≥ 50%)
+        if (dates.length > 0) {
+            for (const forecast of dates) {
+                const forecastDate = new Date(forecast.date);
+                if (forecastDate >= nextWaterDate && forecast.averagePop >= 50) {
+                    nextWaterDate = forecastDate;
+                    break;
+                }
+            }
+        }
+    
+        // If the calculated next watering date is in the past, use today
+        const today = new Date();
+        today.setHours(0, 0, 0, 0); // Normalize today's date to avoid time mismatches
+        const tomorrow = new Date(today);
+        tomorrow.setDate(today.getDate() + 1);
+    
+        if (nextWaterDate < today) {
+            return "Today";
+        } else if (nextWaterDate.toDateString() === today.toDateString()) {
+            return "Today";
+        } else if (nextWaterDate.toDateString() === tomorrow.toDateString()) {
+            return "Tomorrow";
+        } else {
+            return nextWaterDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        }
+    };
+    
 
     return (
         <div>
@@ -190,6 +239,7 @@ const HomePage = ({ user }) => { //Initialize all of the states that I use in th
                             const lastWatered = plant?.lastWatered
                                 ? new Date(plant.lastWatered).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
                                 : 'Never';
+                            const nextWaterDate = calculateNextWaterDate(plant);
 
                             return (
                                 <li key={index} className="flex justify-between gap-x-6 py-5">
@@ -198,7 +248,7 @@ const HomePage = ({ user }) => { //Initialize all of the states that I use in th
                                         <div className="flex flex-1 flex-col justify-center">
                                             <p className="text-[#0d1c12] text-base font-medium leading-normal">{plant.common_name}</p>
                                             <p className="text-[#2c587d] text-sm font-normal leading-normal">Last Watered Date: {lastWatered}</p>
-                                            <p className="text-[#2c587d] text-sm font-normal leading-normal">Next Water Date (work in progress)</p>
+                                            <p className="text-[#2c587d] text-sm font-normal leading-normal">Next Water Date: {nextWaterDate}</p>
                                         </div>
                                         </div>
                                         <div className="hidden shrink-0 sm:flex sm:flex-col sm:items-end">

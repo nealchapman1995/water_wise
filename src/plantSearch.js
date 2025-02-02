@@ -40,18 +40,20 @@ function PlantSearch({ user }) {
 
     return (
         <div>
-            <form onSubmit={handleSearch}>
+            <div className='flex items-center justify-center'>
+            <form onSubmit={handleSearch } className=' '>
                 <input
                     type="text"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     placeholder="Search for plants"
-                    className="border p-2 rounded-md"
+                    className="border p-2 rounded-md m-5 w-80"
                 />
                 <button type="submit" className="ml-2 bg-blue-500 text-white p-2 rounded-md">
                     Search
                 </button>
             </form>
+            </div>
             <div className='border-solid border-orange-950'>
             <ul class="divide-y divide-gray-100 w-2/4 m-auto">
                 {results.map((result, index) => (
