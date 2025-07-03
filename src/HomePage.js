@@ -311,7 +311,8 @@ const HomePage = ({ user }) => { //Initialize all of the states that I use in th
                     </div>
                 </div>
                 </div>
-                <div className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
+
+                <div className="max-w-7xl mx-auto px-6 py-8 space-y-8 bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
                     <div className="bg-gradient-to-r from-green-500 to-emerald-600 px-6 py-4">
                         <div className="flex items-center justify-between">
                             <h2 className="text-xl font-bold text-white flex items-center">
