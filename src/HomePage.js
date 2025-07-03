@@ -2,7 +2,7 @@ import React, { useEffect, useState, useMemo } from 'react';
 import { ref, get, update, push, set } from "firebase/database";
 import { database } from "./configuration"; // Your Firebase database configuration
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faMapMarker, faCloud, faThermometerHalf, faTint, faCalendar, faSun } from '@fortawesome/free-solid-svg-icons'
+import { faMapMarker, faCloud, faThermometerHalf, faTint, faCalendar, faSun, faCloudRain, faLeaf } from '@fortawesome/free-solid-svg-icons'
 
 
 const HomePage = ({ user }) => { //Initialize all of the states that I use in the homepage
@@ -221,6 +221,21 @@ const HomePage = ({ user }) => { //Initialize all of the states that I use in th
             return nextWaterDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
         }
     };
+
+    const getWateringFrequencyColor = (frequency) => {
+        switch(frequency?.toLowerCase()) {
+            case 'frequent': return 'text-blue-600 bg-blue-50';
+            case 'average': return 'text-green-600 bg-green-50';
+            case 'minimum': return 'text-amber-600 bg-amber-50';
+            default: return 'text-gray-600 bg-gray-50';
+        }
+    };
+
+    const getNextWaterUrgency = (nextWaterDate) => {
+        if (nextWaterDate === "Today") return 'text-red-600 bg-red-50';
+        if (nextWaterDate === "Tomorrow") return 'text-orange-600 bg-orange-50';
+        return 'text-green-600 bg-green-50';
+    };
     
 
     return (
@@ -276,13 +291,16 @@ const HomePage = ({ user }) => { //Initialize all of the states that I use in th
                                 4-Day Forecast
                             </h3>
                             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                                {dates.map((day, index) => (
+                                {dates.slice(1, 5).map((day, index) => (
                                     <div key={index} className="bg-gray-50 rounded-lg p-4 text-center">
                                         <p className="text-sm font-medium text-gray-600 mb-2">
                                             {new Date(day.date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
                                         </p>
                                         <div className="flex items-center justify-center mb-2">
-                                            {day.icon === 'rainy' ? <FontAwesomeIcon icon={faCloud} className="w-8 h-8 text-blue-500" /> : <FontAwesomeIcon icon={faSun} className="w-8 h-8 text-yellow-500" />}
+                                            {day.icon && day.icon.includes('rain') ?
+                                                <FontAwesomeIcon icon={faCloudRain} className="w-8 h-8 text-blue-500" /> :
+                                                <FontAwesomeIcon icon={faSun} className="w-8 h-8 text-yellow-500" />
+                                            }
                                         </div>
                                         <p className="text-xs text-gray-600">{day.temp_min}° - {day.temp_max}°</p>
                                         <p className="text-xs text-blue-600 font-medium">{day.averagePop}% rain</p>
@@ -292,6 +310,113 @@ const HomePage = ({ user }) => { //Initialize all of the states that I use in th
                         </div>
                     </div>
                 </div>
+                </div>
+                <div className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
+                    <div className="bg-gradient-to-r from-green-500 to-emerald-600 px-6 py-4">
+                        <div className="flex items-center justify-between">
+                            <h2 className="text-xl font-bold text-white flex items-center">
+                                <FontAwesomeIcon icon={faLeaf} className="w-5 h-5 mr-2" />
+                                Your Plants ({Object.keys(userPlants).length})
+                            </h2>
+                            <div className="text-white text-sm">
+                                {Object.values(userPlants).filter(plant => calculateNextWaterDate(plant) === "Today").length} need watering today
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="p-6">
+                        {Object.keys(userPlants).length > 0 ? (
+                            <div className="grid gap-6">
+                                {Object.keys(userPlants).map((plantName, index) => {
+                                    const plant = userPlants[plantName];
+                                    const lastWatered = plant?.lastWatered
+                                        ? new Date(plant.lastWatered).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+                                        : 'Never';
+                                    const nextWaterDate = calculateNextWaterDate(plant);
+
+                                    return (
+                                        <div key={index} className="bg-gray-50 rounded-xl p-6 hover:shadow-md transition-shadow">
+                                            <div className="flex flex-col lg:flex-row lg:items-center space-y-4 lg:space-y-0 lg:space-x-6">
+                                                {/* Plant Image */}
+                                                <div className="flex-shrink-0">
+                                                    <img 
+                                                        alt={plant.common_name} 
+                                                        src={plant.default_image.medium_url} 
+                                                        className="w-20 h-24 object-cover rounded-lg shadow-sm"
+                                                    />
+                                                </div>
+
+                                                {/* Plant Info */}
+                                                <div className="flex-1 min-w-0">
+                                                    <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between">
+                                                        <div className="flex-1">
+                                                            <h3 className="text-lg font-bold text-gray-900 mb-1">{plant.common_name}</h3>
+                                                            <p className="text-sm text-gray-600 mb-3 italic">{plant.scientific_name}</p>
+                                                            
+                                                            <div className="flex flex-wrap gap-2 mb-3">
+                                                                <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getWateringFrequencyColor(plant.watering)}`}>
+                                                                    {plant.watering} watering
+                                                                </span>
+                                                                <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getNextWaterUrgency(nextWaterDate)}`}>
+                                                                    Next: {nextWaterDate}
+                                                                </span>
+                                                            </div>
+
+                                                            <div className="grid grid-cols-2 gap-4 text-sm">
+                                                                <div>
+                                                                    <p className="text-gray-600">Last watered</p>
+                                                                    <p className="font-medium text-gray-900">{lastWatered}</p>
+                                                                </div>
+                                                                <div>
+                                                                    <p className="text-gray-600">Watering frequency</p>
+                                                                    <p className="font-medium text-gray-900 capitalize">{plant.watering}</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        {/* Action Buttons */}
+                                                        <div className="flex flex-col space-y-3 lg:ml-6 mt-4 lg:mt-0">
+                                                            <button
+                                                                disabled={rainProbability < 50}
+                                                                onClick={() => waterPlantsWithRain(plant.common_name)}
+                                                                className={`flex items-center justify-center px-4 py-2 rounded-lg font-medium text-sm transition-colors ${
+                                                                    rainProbability < 50 
+                                                                        ? 'bg-gray-200 text-gray-400 cursor-not-allowed' 
+                                                                        : 'bg-blue-500 hover:bg-blue-600 text-white shadow-sm hover:shadow-md'
+                                                                }`}
+                                                            >
+                                                                <fontAwesomeIcon icon={faCloudRain} className="w-4 h-4 mr-2" />
+                                                                Water by Rain
+                                                            </button>
+                                                            
+                                                            <button 
+                                                                onClick={() => waterPlantsWithHose(plant.common_name)}
+                                                                className="flex items-center justify-center px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg font-medium text-sm transition-colors shadow-sm hover:shadow-md"
+                                                            >
+                                                                <fontAwesomeIcon icon={faTint} className="w-4 h-4 mr-2" />
+                                                                Water by Hose
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        ) : (
+                            <div className="text-center py-12">
+                                <div className="w-16 h-16 mx-auto mb-4 bg-green-100 rounded-full flex items-center justify-center">
+                                    <FontAwesomeIcon icon={faLeaf} className="w-8 h-8 text-green-600" />
+                                </div>
+                                <h3 className="text-lg font-medium text-gray-900 mb-2">No plants yet!</h3>
+                                <p className="text-gray-600 mb-6">Start your plant care journey by adding your first plant.</p>
+                                <button className="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                                    Add Your First Plant
+                                </button>
+                            </div>
+                        )}
+                    </div>
                 </div>
             <div class="flex flex-wrap justify-between gap-3 p-4"><p class="text-[#141414] tracking-light text-[32px] font-bold leading-tight min-w-72">Welcome {user.displayName}</p></div>
             <h3 class="text-[#141414] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">Today's weather</h3>
