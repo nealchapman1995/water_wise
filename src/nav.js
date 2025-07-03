@@ -2,6 +2,8 @@ import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuIt
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { useNavigate } from "react-router-dom";
 import { getAuth, signOut } from 'firebase/auth';
+import { faLeaf } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const navigation = [
   { name: 'Home', href: '/home', current: false },
@@ -27,7 +29,26 @@ export default function NavBar() {
     };
   return (
     <Disclosure as="nav" className="bg-inherit">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-20">
+      <div className=''>
+      <div className="bg-white shadow-sm border-b border-gray-200">
+                <div className="max-w-7xl mx-auto px-6 py-6">
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-3">
+                            <div className="w-10 h-10 bg-gradient-to-r from-green-500 to-emerald-600 rounded-lg flex items-center justify-center">
+                                <FontAwesomeIcon icon={faLeaf} alt="Plant icon" className="w-6 h-6 text-white" />
+                            </div>
+                            <div>
+                                <h1 className="text-2xl font-bold text-gray-900">WaterWise</h1>
+                                <p className="text-sm text-gray-600">Smart watering assistant</p>
+                            </div>
+                        </div>
+                        <div className="text-right">
+                            <p className="text-lg font-semibold text-gray-900">Welcome back, !</p>
+                            <p className="text-sm text-gray-600">Let's keep your plants happy today</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         <div className="relative flex h-16 items-center justify-between">
           <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
             {/* Mobile menu button*/}

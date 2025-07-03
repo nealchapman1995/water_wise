@@ -1,13 +1,17 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { ref, get, update, push, set } from "firebase/database";
 import { database } from "./configuration"; // Your Firebase database configuration
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faMapMarker, faCloud, faThermometerHalf, faTint, faCalendar, faSun } from '@fortawesome/free-solid-svg-icons'
+
 
 const HomePage = ({ user }) => { //Initialize all of the states that I use in the homepage
     const [data, setData] = useState(null);
     const [selectedCity, setSelectedCity] = useState('');
     const [inputCity, setInputCity] = useState('');
     const [userPlants, setUserPlants] = useState({}); 
-    const [rainProbability, setRainProbability] = useState(0); 
+    const [rainProbability, setRainProbability] = useState(0);
+    const [currentTemp, setCurrentTemp] = useState(0); 
 
     const getUserData = async (user) => {
         const userID = user.uid;
@@ -72,6 +76,9 @@ const HomePage = ({ user }) => { //Initialize all of the states that I use in th
           })
           .then(data => {
             setData(data);
+            if (data && data.list && data.list.length > 0) {
+                setCurrentTemp(data.list[0].main.temp.toFixed(0)); // Get current temp and round it
+              }
           })
           .catch(error => {
             console.error('Error fetching data:', error);
@@ -217,8 +224,75 @@ const HomePage = ({ user }) => { //Initialize all of the states that I use in th
     
 
     return (
-        <div>
-            <div className='px-40 py-5'>
+        <div className='min-h-screen bg-gradient-to-br from-green-50 via-blue-50 to-emerald-50'>
+            <div >
+            <div className="max-w-7xl mx-auto px-6 py-8 space-y-8">
+                {/* Weather Dashboard */}
+                <div className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
+                    <div className="bg-gradient-to-r from-blue-500 to-cyan-600 px-6 py-4">
+                        <h2 className="text-xl font-bold text-white flex items-center">
+                        <FontAwesomeIcon icon={faCloud} className="w-5 h-5 mr-2" />
+                            Today's Weather
+                        </h2>
+                    </div>
+                    
+                    <div className="p-6">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div className="bg-gray-50 rounded-xl p-4 flex items-center space-x-4">
+                                <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                                    <FontAwesomeIcon icon={faMapMarker} className="w-6 h-6 text-blue-600" />
+                                </div>
+                                <div>
+                                    <p className="text-sm font-medium text-gray-600">Location</p>
+                                    <p className="text-lg font-bold text-gray-900">{selectedCity}</p>
+                                </div>
+                            </div>
+
+                            <div className="bg-gray-50 rounded-xl p-4 flex items-center space-x-4">
+                                <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                                <FontAwesomeIcon icon={faThermometerHalf} className="w-6 h-6 text-orange-600" />
+                                </div>
+                                <div>
+                                    <p className="text-sm font-medium text-gray-600">Temperature</p>
+                                    <p className="text-lg font-bold text-gray-900">{currentTemp}°F</p>
+                                </div>
+                            </div>
+
+                            <div className="bg-gray-50 rounded-xl p-4 flex items-center space-x-4">
+                                <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                                <FontAwesomeIcon icon={faTint} className="w-6 h-6 text-blue-600" />
+                                </div>
+                                <div>
+                                    <p className="text-sm font-medium text-gray-600">Rain Chance</p>
+                                    <p className="text-lg font-bold text-gray-900">{rainProbability}%</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* 4-Day Forecast */}
+                        <div className="mt-6 pt-6 border-t border-gray-200">
+                            <h3 className="font-semibold text-gray-900 mb-4 flex items-center">
+                            <FontAwesomeIcon icon={faCalendar} className="w-4 h-4 mr-2" />
+                                4-Day Forecast
+                            </h3>
+                            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                                {dates.map((day, index) => (
+                                    <div key={index} className="bg-gray-50 rounded-lg p-4 text-center">
+                                        <p className="text-sm font-medium text-gray-600 mb-2">
+                                            {new Date(day.date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
+                                        </p>
+                                        <div className="flex items-center justify-center mb-2">
+                                            {day.icon === 'rainy' ? <FontAwesomeIcon icon={faCloud} className="w-8 h-8 text-blue-500" /> : <FontAwesomeIcon icon={faSun} className="w-8 h-8 text-yellow-500" />}
+                                        </div>
+                                        <p className="text-xs text-gray-600">{day.temp_min}° - {day.temp_max}°</p>
+                                        <p className="text-xs text-blue-600 font-medium">{day.averagePop}% rain</p>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
             <div class="flex flex-wrap justify-between gap-3 p-4"><p class="text-[#141414] tracking-light text-[32px] font-bold leading-tight min-w-72">Welcome {user.displayName}</p></div>
             <h3 class="text-[#141414] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">Today's weather</h3>
             <div class="p-4 grid grid-cols-2">
