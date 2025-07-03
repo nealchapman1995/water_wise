@@ -310,9 +310,7 @@ const HomePage = ({ user }) => { //Initialize all of the states that I use in th
                         </div>
                     </div>
                 </div>
-                </div>
-
-                <div className="max-w-7xl mx-auto px-6 py-8 space-y-8 bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
+                <div className=" bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
                     <div className="bg-gradient-to-r from-green-500 to-emerald-600 px-6 py-4">
                         <div className="flex items-center justify-between">
                             <h2 className="text-xl font-bold text-white flex items-center">
@@ -419,6 +417,9 @@ const HomePage = ({ user }) => { //Initialize all of the states that I use in th
                         )}
                     </div>
                 </div>
+                </div>
+
+                
             <div class="flex flex-wrap justify-between gap-3 p-4"><p class="text-[#141414] tracking-light text-[32px] font-bold leading-tight min-w-72">Welcome {user.displayName}</p></div>
             <h3 class="text-[#141414] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">Today's weather</h3>
             <div class="p-4 grid grid-cols-2">
