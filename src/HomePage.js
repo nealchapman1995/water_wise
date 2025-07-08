@@ -2,7 +2,7 @@ import React, { useEffect, useState, useMemo } from 'react';
 import { ref, get, update, push, set } from "firebase/database";
 import { database } from "./configuration"; // Your Firebase database configuration
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faMapMarker, faCloud, faThermometerHalf, faTint, faCalendar, faSun, faCloudRain, faLeaf } from '@fortawesome/free-solid-svg-icons'
+import { faMapMarker, faCloud, faThermometerHalf, faTint, faCalendar, faSun, faLeaf } from '@fortawesome/free-solid-svg-icons'
 
 
 const HomePage = ({ user }) => { //Initialize all of the states that I use in the homepage
@@ -298,7 +298,7 @@ const HomePage = ({ user }) => { //Initialize all of the states that I use in th
                                         </p>
                                         <div className="flex items-center justify-center mb-2">
                                             {day.icon && day.icon.includes('rain') ?
-                                                <FontAwesomeIcon icon={faCloudRain} className="w-8 h-8 text-blue-500" /> :
+                                                <FontAwesomeIcon icon={faCloud} className="w-8 h-8 text-blue-500" /> :
                                                 <FontAwesomeIcon icon={faSun} className="w-8 h-8 text-yellow-500" />
                                             }
                                         </div>
@@ -366,10 +366,7 @@ const HomePage = ({ user }) => { //Initialize all of the states that I use in th
                                                                     <p className="text-gray-600">Last watered</p>
                                                                     <p className="font-medium text-gray-900">{lastWatered}</p>
                                                                 </div>
-                                                                <div>
-                                                                    <p className="text-gray-600">Watering frequency</p>
-                                                                    <p className="font-medium text-gray-900 capitalize">{plant.watering}</p>
-                                                                </div>
+                                                                
                                                             </div>
                                                         </div>
 
@@ -383,8 +380,7 @@ const HomePage = ({ user }) => { //Initialize all of the states that I use in th
                                                                         ? 'bg-gray-200 text-gray-400 cursor-not-allowed' 
                                                                         : 'bg-blue-500 hover:bg-blue-600 text-white shadow-sm hover:shadow-md'
                                                                 }`}
-                                                            >
-                                                                <fontAwesomeIcon icon={faCloudRain} className="w-4 h-4 mr-2" />
+                                                            >   
                                                                 Water by Rain
                                                             </button>
                                                             
@@ -392,7 +388,6 @@ const HomePage = ({ user }) => { //Initialize all of the states that I use in th
                                                                 onClick={() => waterPlantsWithHose(plant.common_name)}
                                                                 className="flex items-center justify-center px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg font-medium text-sm transition-colors shadow-sm hover:shadow-md"
                                                             >
-                                                                <fontAwesomeIcon icon={faTint} className="w-4 h-4 mr-2" />
                                                                 Water by Hose
                                                             </button>
                                                         </div>
