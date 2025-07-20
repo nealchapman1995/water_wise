@@ -403,9 +403,9 @@ const HomePage = ({ user }) => { //Initialize all of the states that I use in th
                                 </div>
                                 <h3 className="text-lg font-medium text-gray-900 mb-2">No plants yet!</h3>
                                 <p className="text-gray-600 mb-6">Start your plant care journey by adding your first plant.</p>
-                                <button className="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                                <a href="/plantsearch" className="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg font-medium transition-colors">
                                     Add Your First Plant
-                                </button>
+                                </a>
                             </div>
                         )}
                     </div>
